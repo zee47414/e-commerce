@@ -1,0 +1,108 @@
+.outerContainer{
+    display: flex;
+    justify-content: center;
+}
+.leftSide{
+    width: 16vw;
+    height: 15vh;
+    background-color: aliceblue;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 50px;
+    border-radius: 10px;
+    padding: 25px;
+    margin-right: 2%;
+    margin-left: 2%;
+}
+.leftSide button {
+    width: 8vw;
+    height: 5vh;
+    border-radius: 10px;
+    background-color: #7064e5;
+    border: #7064e5;
+    color: white;
+    font-weight: 900;
+    text-align: center;
+}
+.leftSide button:hover{
+    background-color: white;
+    color: #7064e5;
+    border:1px solid #7064e5 ;
+}
+.rightSide{
+    margin-top: 4vh;
+    width: 80vw;
+    margin-right: 0;
+    display:flex;
+    justify-content: center;
+    flex-wrap: wrap;   
+}
+.productContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 75vh;
+    width: 20vw;
+    background-color:white;
+    box-shadow: 0 2px 8px 0 rgba(64,77,148,.4);
+    margin-right: auto;
+    border-radius: 10px;
+    margin-bottom: 50px;
+}
+.productContainer img{
+    height: 40vh;
+    width: 16vw;
+    margin: 2vw;
+}
+.productDetails{
+    padding: 10px;
+}
+.productDetails p{
+    font-family: sans-serif;
+    font-size:larger;
+    color: #3a384d;
+}
+.priceQty{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 5px;
+}
+.qty{
+    display: flex;
+    position: relative;
+}
+.qty img{
+    width: 20px;
+    height: 20px;
+    position: relative;
+    bottom: 25px;
+}
+.minus:hover{
+ width: 25px;
+ height: 25px;
+}
+.plus:hover{
+    width: 25px;
+    height: 25px;
+   
+   }
+.button {
+    text-align: center;
+    margin-bottom: 40px;
+}
+.button button{
+    width: 10vw;
+    height: 8vh;
+    background-color: #fc495b;
+    border-radius: 10px;
+    border: #fc495b;
+    color: white;
+    font-weight: 900;
+}
+.button button:hover{
+    background-color: white;
+    color: #fc495b;
+    border:1px solid #fc495b ;
+}

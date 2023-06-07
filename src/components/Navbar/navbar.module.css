@@ -1,0 +1,88 @@
+*{
+    margin: 0;
+}
+.Navbar{
+    height: 12vh;
+    background-color: white;
+    box-shadow: 0 0 5px 5px #ebe4e4;
+    display: flex;
+    justify-content:space-between;
+}
+.Navbar h2{
+box-sizing: border-box;
+padding: 25px;
+}
+.leftnav{
+    padding: 25px;
+}
+.home{
+    padding: 25px;
+}
+.home img{
+    width: 30px;
+    height: 30px;
+    margin-right: 5px;
+}
+.home b{
+    font-weight: 500;
+    font-size:x-large;
+    color: rgb(173, 173, 240);
+}
+.signin{
+    padding: 25px;
+    position: relative;
+    right: 100px;
+}
+.signin img{
+    width: 30px;
+    height: 30px;
+    margin-right: 5px;
+}
+.signin b{
+    font-weight: 500;
+    font-size:x-large;
+    color: rgb(173, 173, 240);
+}
+.cart{
+    padding: 25px;
+}
+.cart img{
+    width: 30px;
+    height: 30px;
+    margin-right: 5px;
+}
+.cart b{
+    font-weight: 500;
+    font-size:x-large;
+    color: rgb(173, 173, 240);
+}
+.order{
+    padding: 25px;
+}
+.order img{
+    width: 30px;
+    height: 30px;
+    margin-right: 5px;
+}
+.order b{
+    font-weight: 500;
+    font-size:x-large;
+    color: rgb(173, 173, 240);
+}
+.signout{
+    padding: 25px;
+    cursor: pointer;
+}
+.signout img{
+    width: 30px;
+    height: 30px;
+    margin-right: 5px;
+}
+.signout b{
+    font-weight: 500;
+    font-size:x-large;
+    color: rgb(173, 173, 240);
+}
+.Link{
+    text-decoration: none;
+}
