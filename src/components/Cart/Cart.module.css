@@ -106,3 +106,12 @@
     color: #fc495b;
     border:1px solid #fc495b ;
 }
+.loader{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    top: 20vh;
+    gap:5px;
+ }
+ 

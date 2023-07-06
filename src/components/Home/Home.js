@@ -1,52 +1,13 @@
 import styles from './Home.module.css';
-import { useState, useEffect } from 'react';
+import {  useEffect,useState } from 'react';
 import { db } from '../../firebase';
-import { collection, onSnapshot, addDoc, updateDoc } from 'firebase/firestore';
-
+import { collection, onSnapshot, addDoc } from 'firebase/firestore';
+import { useHomeValue } from '../../homeContext';
+import Spinner from 'react-spinner-material';
 export default function Home(props) {
-  console.log(props.userId);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [products, setProducts] = useState([]);
-  const [filteredProducts, setFilteredProducts] = useState([]);
-  const [sliderValue, setSliderValue] = useState(0);
-  const [selectedCategories, setSelectedCategories] = useState([]);
-  const [cartItem, setCartItem] = useState([]);
-  const [qty, setQty] = useState(1);
-
-  // searchbar handler 
-  const handleSearch = (e) => {
-    setSearchQuery(e.target.value);
-  }
-
-  const handleAddCart = async (name, category, description, price, img) => {
-
-    const docRef = collection(db, `Products/${props.userId}/myCart`);
-    await addDoc(docRef, {
-      qty: 1,
-      name: name,
-      category: category,
-      description: description,
-      price: price,
-      img: img
-    });
-
-  }
-
-  //  handling category to filter by category 
-  function handleCategory(e) {
-    let value = e.target.value;
-    if (e.target.checked) {
-      setSelectedCategories((prevCategories) => (
-        [...prevCategories, value]
-      ))
-    } else {
-      setSelectedCategories((prevCategories) => (
-        prevCategories.filter((category) => category !== value)
-      ))
-    }
-    setSearchQuery("");
-  }
-
+ 
+  const {searchQuery  ,products,setProducts,filteredProducts,setFilteredProducts,sliderValue,setSliderValue,selectedCategories,handleCategory,handleAddCart,handleSearch} = useHomeValue();
+  const [isLoading,setIsLoading] = useState(true);
   // fetching products from firebase while mounting
   useEffect(() => {
     const unsub = onSnapshot(collection(db, "Products"), (snapshot) => {
@@ -57,6 +18,7 @@ export default function Home(props) {
         }
       })
       setProducts(products);
+      setIsLoading(false);
 
     })
     return unsub;
@@ -72,9 +34,11 @@ export default function Home(props) {
       ))
     }
     if (searchQuery) {
+
       filtered = filtered.filter((product) => (
-        product.name.toLowerCase().includes(searchQuery.toLocaleLowerCase())
+        product.name.toLowerCase().includes(searchQuery.toLowerCase())
       ))
+     
     }
     if (sliderValue > 0) {
       filtered = filtered.filter((product) => (
@@ -89,8 +53,14 @@ export default function Home(props) {
 
   return (
     <>
-
-      <div className={styles.search}>
+       {isLoading ? (
+     <div className={styles.loader}>
+        <Spinner radius={40} color={"#333"} stroke={2} visible={true} /> 
+        <h1>Loading....</h1>
+      </div>
+      ) :(
+        <>
+        <div className={styles.search}>
         <input type='text' placeholder='Search....' onChange={handleSearch} />
       </div>
       <div className={styles.outerContainer}>
@@ -128,13 +98,16 @@ export default function Home(props) {
                 <b>&#8377;{product.price}</b>
               </div>
               <div className={styles.button}>
-                <button onClick={() => handleAddCart(product.name, product.category, product.description, product.price, product.img)} > Add to Cart</button>
+                <button onClick={() => handleAddCart(product.name, product.category, product.description, product.price, product.img,`${props.userId}`)} > Add to Cart</button>
               </div>
             </div>
           ))}
         </div>
 
       </div>
+        </>
+      )}
+      
     </>
   )
 }

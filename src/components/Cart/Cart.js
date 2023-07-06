@@ -1,10 +1,16 @@
 import {db} from '../../firebase';
-import { onSnapshot,collection,deleteDoc, addDoc,doc, updateDoc } from 'firebase/firestore';
-import { useState,useEffect } from 'react';
+import { onSnapshot,collection,addDoc, deleteDoc,doc} from 'firebase/firestore';
+import { useEffect,useState } from 'react';
 import { useCartValue } from '../../cartContext';
 import styles from './Cart.module.css';
+import Spinner from 'react-spinner-material';
+
+
+
 export default function Cart(props){
-    const{cartItem ,setCartItem ,qty,setQty,totalPrice,setTotalPrice,handleRemove,handleMinusqty,handleplusqty} = useCartValue();
+    const{cartItem ,setCartItem ,totalPrice,setTotalPrice,handleRemove,handleMinusqty,handleplusqty,handlePurchase} = useCartValue();
+    const [isLoading,setIsLoading] = useState(true);
+   
     
     useEffect(()=>{
         const unsub =onSnapshot(collection(db,`Products/${props.userId}/myCart`),(snapshot)=>{
@@ -14,59 +20,40 @@ export default function Cart(props){
                     ...doc.data()
                 }
             })
+            setIsLoading(false);
             setCartItem(items);
         })
+       
+    },[]);
+    useEffect(()=>{
         let total = 0;
         total = cartItem.reduce((acc,item)=> acc + item.qty * item.price, 0);
         setTotalPrice(total);
-    },[]);
-
-//    async function handleRemove(id,price){
-//          await deleteDoc(doc(db,`Products/${props.userId}/myCart`,id));
-//          console.log(id);
-//          setCartItem((prevItems)=> prevItems.filter((item)=> item.id !== id));
-
-//          setTotalPrice((prevTotal)=> prevTotal - price)
-//     }
-
-//    async function handleMinusqty(id,price){
-//       const updatedQty = qty - 1;
-//        setQty(updatedQty);
-//        const docRef = doc(db,`Products/${props.userId}/myCart`,id); 
-//        if(updatedQty > 0){
-//         await updateDoc(docRef,{
-//             qty : updatedQty 
-//            })
-//            setTotalPrice(totalPrice - price);
-//        }else{
-//         handleRemove(id , price);
-//     }
-//     }
-
-//   async  function handleplusqty(id,price){
-//         const updatedQty = qty + 1;
-//         setQty(updatedQty);
-        
-//         const docRef = doc(db,`Products/${props.userId}/myCart`,id); 
-//          await updateDoc(docRef,{
-//              qty : updatedQty ,
-//             })
-//        setTotalPrice(totalPrice + price);
-       
-//     }
+    },[cartItem])
     
     return (
         <>
-        <div className={styles.outerContainer}>
-            <div className={styles.leftSide}>
+        {isLoading ? (
+           <div className={styles.loader}>
+           <Spinner radius={40} color={"#333"} stroke={2} visible={true} /> 
+           <h1>Loading....</h1>
+         </div> 
+        ) : (
+            <>
+             <div className={styles.outerContainer}>
+        {cartItem.length === 0 ? <h1>Cart is Empty!</h1>:
+        <div className={styles.leftSide}>
                 
-                <b>TotalPrice : &nbsp;{totalPrice}</b>
-                <br />
-                <br />
-                <button>Purchase</button>
-            </div>
+        <b>TotalPrice : &nbsp;{totalPrice}</b>
+        <br />
+        <br />
+        <button onClick={()=>handlePurchase(`${props.userId}`)}>Purchase</button>
+        </div>
+        }
+            
             <div className={styles.rightSide}>
                 {cartItem.map((item)=>(
+                    
                       <div className={styles.productContainer} key={item.id}>
                         <img src={item.img} alt ="product image" />
                         <div className={styles.productDetails}> 
@@ -77,7 +64,7 @@ export default function Cart(props){
                             </div>
                             <br/>
                             <div className={styles.qty}>
-                                <img src='https://cdn-icons-png.flaticon.com/128/1828/1828899.png' alt="minus qty" className={styles.minus} onClick={()=>handleMinusqty(item.id,item.price,`${props.useId}`)} />
+                                <img src='https://cdn-icons-png.flaticon.com/128/1828/1828899.png' alt="minus qty" className={styles.minus} onClick={()=>handleMinusqty(item.id,item.price,`${props.userId}`)} />
                                 <b>{item.qty}</b>
                                 <img src='https://cdn-icons-png.flaticon.com/128/1828/1828919.png' alt = "plus qty" className={styles.plus} onClick={()=>handleplusqty(item.id,item.price,`${props.userId}`)}/>
                             </div>
@@ -85,7 +72,7 @@ export default function Cart(props){
 
                         </div>
                         <div className={styles.button}>
-                            <button onClick={()=>handleRemove(item.id,item.price,`${props.useId}`)} >Remove From Cart</button>
+                            <button onClick={()=>handleRemove(item.id,item.price,`${props.userId}`)} >Remove From Cart</button>
                         </div>
 
                       </div>
@@ -93,6 +80,10 @@ export default function Cart(props){
                  
             </div>
         </div>
+            </>
+        )}
+         
+
         </>
     )
 }

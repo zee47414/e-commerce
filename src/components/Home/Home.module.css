@@ -98,3 +98,11 @@
     color: #7064e5;
     border:1px solid #7064e5 ;
 }
+.loader{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    top: 20vh;
+    gap:5px;
+ }

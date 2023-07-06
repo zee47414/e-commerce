@@ -59,7 +59,7 @@ export default function SignIn(){
             Login
           </button>
           <p>
-            Already have an account?{" "}
+           Or Sign-Up Instead?{" "}
             <span>
               <Link to="/signup">Sign up</Link>
             </span>
